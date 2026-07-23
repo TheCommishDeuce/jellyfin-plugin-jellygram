@@ -42,7 +42,7 @@ Higher-level additions take precedence. Importing a new series does not also pro
 
 ## Compatibility
 
-The `1.0.0.0` release targets:
+The `1.1.0.0` release targets:
 
 - Jellyfin `12.0.0-rc2`
 - .NET `10.0`
@@ -63,7 +63,7 @@ Then install **Jellygram** from the plugin catalog and restart Jellyfin.
 
 ### Manual Docker installation
 
-1. Download `Jellygram_1.0.0.0.zip` from the GitHub release.
+1. Download `Jellygram_1.1.0.0.zip` from the GitHub release.
 2. Extract `Jellyfin.Plugin.Jellygram.dll` into the Jellyfin configuration volume:
 
    ```text

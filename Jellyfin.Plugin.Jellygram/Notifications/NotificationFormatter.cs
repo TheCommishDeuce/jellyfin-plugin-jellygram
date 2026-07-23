@@ -22,13 +22,17 @@ public static class NotificationFormatter
 
         foreach (var show in series.OrderBy(x => x.Name))
         {
-            var seasonCount = seasons.Count(x => x.SeriesId == show.Id);
-            var episodeCount = episodes.Count(x => x.SeriesId == show.Id);
-            var counts = Counts(seasonCount, episodeCount);
+            var showSeasons = seasons.Where(x => x.SeriesId == show.Id).ToList();
+            var showEpisodes = episodes.Where(x => x.SeriesId == show.Id).ToList();
+            var seasonNumbers = showSeasons
+                .Concat(showEpisodes)
+                .Where(x => x.SeasonNumber.HasValue)
+                .Select(x => x.SeasonNumber!.Value);
+            var summary = ShowImportSummary(seasonNumbers, showSeasons.Count, showEpisodes.Count);
             var text = $"📺 <b>New show</b>\n<b>{E(show.Name)}{Year(show)}</b>";
-            if (counts.Length > 0)
+            if (summary.Length > 0)
             {
-                text += $"\n{counts}";
+                text += $"\n{summary}";
             }
 
             result.Add(Create(text, show, descriptions));
@@ -104,12 +108,31 @@ public static class NotificationFormatter
         ? text
         : $"{text}\n\n<b>Description</b>\n{E(Shorten(value, 900))}";
 
-    private static string Counts(int seasons, int episodes)
+    private static string ShowImportSummary(IEnumerable<int> seasonNumbers, int seasonCount, int episodeCount)
     {
-        var values = new List<string>();
-        if (seasons > 0) values.Add($"{seasons} season{Plural(seasons)}");
-        if (episodes > 0) values.Add($"{episodes} episode{Plural(episodes)}");
-        return string.Join(" · ", values);
+        var numbers = seasonNumbers.Distinct().Order().ToList();
+        string seasonSummary;
+        if (numbers.Count == 0)
+        {
+            seasonSummary = seasonCount > 0 ? $"{seasonCount} season{Plural(seasonCount)}" : string.Empty;
+        }
+        else
+        {
+            var includesSpecials = numbers.Remove(0);
+            seasonSummary = numbers.Count switch
+            {
+                0 when includesSpecials => "Specials",
+                1 => $"Season {numbers[0]:00}",
+                _ => $"Seasons {Ranges(numbers, string.Empty)}"
+            };
+            if (includesSpecials && numbers.Count > 0)
+            {
+                seasonSummary += " + Specials";
+            }
+        }
+
+        var episodeSummary = episodeCount > 0 ? $"{episodeCount} episode{Plural(episodeCount)}" : string.Empty;
+        return string.Join(" · ", new[] { seasonSummary, episodeSummary }.Where(x => x.Length > 0));
     }
 
     private static string Ranges(IEnumerable<int> source, string prefix)

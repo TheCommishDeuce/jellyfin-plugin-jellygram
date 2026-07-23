@@ -2,6 +2,13 @@
 
 All notable changes to Jellygram are documented here.
 
+## 1.1.0.0 — 2026-07-23
+
+- Show the imported season number in new-show digests, such as `Season 05 · 8 episodes`.
+- Show compact ranges when multiple seasons are imported.
+- Derive season numbers from episode metadata when no usable season parent event is available.
+- Use a padded 16:9 image on Jellyfin's plugin details page.
+
 ## 1.0.0.0 — 2026-07-22
 
 - Send Telegram notifications for newly added movies, series, seasons, and episodes.

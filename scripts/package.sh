@@ -4,7 +4,7 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 dotnet="${DOTNET:-dotnet}"
 if [[ -x "$root/.dotnet/dotnet" ]]; then dotnet="$root/.dotnet/dotnet"; fi
-version="${VERSION:-1.0.0.0}"
+version="${VERSION:-1.1.0.0}"
 output="$root/artifacts"
 dll="$root/Jellyfin.Plugin.Jellygram/bin/Release/net10.0/Jellyfin.Plugin.Jellygram.dll"
 archive="$output/Jellygram_${version}.zip"

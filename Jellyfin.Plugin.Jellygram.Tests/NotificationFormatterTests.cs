@@ -19,8 +19,22 @@ public sealed class NotificationFormatterTests
 
         var notification = Assert.Single(NotificationFormatter.Build(items, true));
         Assert.Contains("New show", notification.Text);
-        Assert.Contains("1 season · 1 episode", notification.Text);
+        Assert.Contains("Season 02 · 1 episode", notification.Text);
         Assert.Contains("Work-life balance.", notification.Text);
+    }
+
+    [Fact]
+    public void NewSeriesShowsLaterSeasonNumberFromEpisodes()
+    {
+        var showId = Guid.NewGuid();
+        var seasonId = Guid.NewGuid();
+        var items = new List<MediaItem> { Item(showId, "Series", "The Bear") };
+        items.AddRange(Enumerable.Range(1, 8)
+            .Select(number => Item(Guid.NewGuid(), "Episode", $"Episode {number}", showId, "The Bear", seasonId, 5, number)));
+
+        var notification = Assert.Single(NotificationFormatter.Build(items, true));
+
+        Assert.Contains("Season 05 · 8 episodes", notification.Text);
     }
 
     [Fact]
