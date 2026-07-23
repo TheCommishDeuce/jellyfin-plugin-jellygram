@@ -28,17 +28,76 @@ Jellygram runs inside Jellyfin and listens directly for library additions. It wa
 - Persistent configuration through the Jellyfin dashboard
 - HTML escaping and delivery retries
 
-## Notification behavior
+## Notification hierarchy
 
-| Jellyfin addition | Telegram result |
-|---|---|
-| Movie | Movie poster, title, year, and overview |
-| Entire new series | One show digest with season and episode counts |
-| New season on an existing series | One season digest that absorbs its episodes |
-| One episode on an existing season | Episode code, title, overview, and artwork |
-| Multiple episodes | One grouped digest with ranges such as `S04: E01–E03, E05` |
+| Priority | Jellyfin addition | Telegram result |
+|---:|---|---|
+| 1 | Entire new series | One show digest that absorbs its seasons and episodes |
+| 2 | New season on an existing series | One season digest that absorbs its episodes |
+| 3 | Multiple episodes on an existing series | One grouped digest with episode ranges |
+| 4 | One episode on an existing series | One detailed episode notification |
+| — | Movie | One detailed movie notification |
 
-Higher-level additions take precedence. Importing a new series does not also produce separate season and episode notifications.
+Higher-level additions take precedence. Importing a new series does not also produce separate season and episode notifications. Posters are attached when available; the text examples below omit them.
+
+### Movie
+
+```text
+🎬 New movie
+Cars (2006)
+
+Description
+A hotshot rookie race car gets stranded in a rundown town and learns that winning isn't everything.
+```
+
+### New show
+
+If the first content Jellyfin sees is a later season, Jellygram identifies it instead of merely saying “1 season”:
+
+```text
+📺 New show
+The Bear (2022)
+Season 05 · 8 episodes
+
+Description
+A young chef from the fine dining world returns to Chicago to run his family's sandwich shop.
+```
+
+A multi-season import uses a compact range such as `Seasons 01–03 · 28 episodes`.
+
+### New season on an existing show
+
+```text
+📚 New season
+For All Mankind — Season 03
+10 episodes included
+
+Description
+The Red Planet becomes the new frontier in the Space Race.
+```
+
+The season notification absorbs all episodes from that season in the same batch.
+
+### Multiple episodes on an existing show
+
+```text
+🍿 New episodes
+For All Mankind · 3 episodes
+• S03: E08–E10 — The Sands of Ares, Coming Home, Stranger in a Strange Land
+```
+
+Discontinuous episode numbers remain explicit, for example `S04: E01–E03, E05`.
+
+### Single episode on an existing show
+
+```text
+🍿 New episode
+For All Mankind
+S03E08 — The Sands of Ares
+
+Description
+Helios and the Soviet mission make an unexpected discovery.
+```
 
 ## Compatibility
 
@@ -53,7 +112,7 @@ Jellyfin plugins are ABI-specific. Do not install this build on Jellyfin 10.10 o
 
 ### Plugin repository
 
-After the first GitHub release, add this URL under **Dashboard → Plugins → Repositories**:
+Add this URL under **Dashboard → Plugins → Repositories**:
 
 ```text
 https://raw.githubusercontent.com/TheCommishDeuce/jellyfin-plugin-jellygram/main/manifest.json
