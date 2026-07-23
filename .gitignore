@@ -1,0 +1,22 @@
+# Build output
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+
+# Local SDK and editor state
+.dotnet/
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Local secrets and OS files
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Logs
+*.log

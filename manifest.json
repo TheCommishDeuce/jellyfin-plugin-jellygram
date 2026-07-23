@@ -1,0 +1,21 @@
+[
+  {
+    "category": "Notifications",
+    "guid": "f68a16a5-3020-4fd3-92d4-9f06b09dfa9a",
+    "name": "Jellygram",
+    "owner": "TheCommishDeuce",
+    "overview": "Grouped Telegram notifications for new Jellyfin media",
+    "description": "Sends rich Telegram notifications when movies and TV are added to Jellyfin. Full shows, seasons, and episode imports are grouped to avoid notification spam.",
+    "imageUrl": "https://raw.githubusercontent.com/TheCommishDeuce/jellyfin-plugin-jellygram/main/assets/logo.png",
+    "versions": [
+      {
+        "version": "1.0.0.0",
+        "changelog": "Initial release with movie and TV notifications, hierarchical batching, metadata readiness retries, descriptions, posters, forum topics, and silent delivery.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/TheCommishDeuce/jellyfin-plugin-jellygram/releases/download/v1.0.0.0/Jellygram_1.0.0.0.zip",
+        "checksum": "e1bdc73d77ef7e3854140bc5f1119a1f",
+        "timestamp": "2026-07-22T00:00:00Z"
+      }
+    ]
+  }
+]

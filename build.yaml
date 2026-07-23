@@ -1,0 +1,17 @@
+---
+name: "Jellygram"
+guid: "f68a16a5-3020-4fd3-92d4-9f06b09dfa9a"
+version: "1.0.0.0"
+targetAbi: "12.0.0.0"
+framework: "net10.0"
+overview: "Grouped Telegram notifications for new Jellyfin media"
+description: >
+  Sends rich Telegram notifications when movies and TV are added to Jellyfin.
+  Full shows, seasons, and episode imports are grouped to avoid notification spam.
+category: "Notifications"
+owner: "TheCommishDeuce"
+artifacts:
+- "Jellyfin.Plugin.Jellygram.dll"
+changelog: >
+  Initial release with movie and TV notifications, hierarchical batching,
+  descriptions, posters, forum topics, and silent delivery.
